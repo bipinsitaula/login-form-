@@ -11,8 +11,6 @@ export class AuthService {
       where: {
         OR: [
           { email: data.email },
-          // Optionally, you can also check if the phone number is already taken
-          // { phoneNumbers: { hasSome: data.phoneNumbers } }
         ]
       },
     });
@@ -37,7 +35,6 @@ export class AuthService {
   }
 
   async login(data: { identifier: string; password: string }) {
-    // Search for a user by email OR if the phoneNumbers array contains the identifier
     const user = await this.prisma.user.findFirst({
       where: {
         OR: [
@@ -47,19 +44,16 @@ export class AuthService {
       },
     });
 
-    // If no user is found with that email or phone number
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Verify the password
     const isPasswordValid = await bcrypt.compare(data.password, user.password);
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Strip the password from the response object
     const { password, ...result } = user;
     
     return result; 

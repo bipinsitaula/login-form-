@@ -23,7 +23,7 @@ export function Login({ onSwitchToRegister }: { onSwitchToRegister: () => void }
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      identifier: '', // Replaced 'email' with 'identifier'
+      identifier: '',
       password: '',
       remember: false,
     },

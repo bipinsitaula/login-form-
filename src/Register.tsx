@@ -28,12 +28,10 @@ export function Register({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
       email: '',
       password: '',
       confirmPassword: '',
-      // Initialize with one empty phone number input
       phoneNumbers: [{ number: '' }], 
     },
   });
 
-  // Setup useFieldArray for dynamic phone numbers
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'phoneNumbers',
@@ -43,7 +41,6 @@ export function Register({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
       
-      // Note: Make sure your backend API expects the new phoneNumbers array structure!
       const response = await fetch(`${apiUrl}/auth/register`, {
         method: 'POST',
         headers: {
@@ -53,7 +50,7 @@ export function Register({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
           name: data.name,
           email: data.email,
           password: data.password,
-          phoneNumbers: data.phoneNumbers.map((p: any) => p.number), // flatten the array of objects to array of strings
+          phoneNumbers: data.phoneNumbers.map((p: any) => p.number),
         }),
       });
       
@@ -124,7 +121,6 @@ export function Register({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
         }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             
-            {/* Example Using Controller API */}
             <Controller
               name="name"
               control={control}
@@ -166,7 +162,6 @@ export function Register({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
               )}
             />
 
-            {/* Dynamic Phone Numbers */}
             <Box mt="lg">
               <Group justify="space-between" mb="xs">
                 <Text size="sm" fw={500}>Phone Numbers</Text>
